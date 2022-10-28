@@ -13,7 +13,7 @@ interface User {
   dateOfActualization: Date;
 }
 
-const usersArray = [] as User[];
+let usersArray = [] as User[];
 
 routes.post("/users", (req, resp) => {
   const {
@@ -61,6 +61,15 @@ routes.get('/users/:id', (req,resp) => {
     resp.json(userIdFind);
 });
 
+routes.delete('/users/:id', (req,resp) => {
+    const { id } = req.params;
+  
+    usersArray = usersArray.filter((user) => user.id !== id); 
+  
+    resp.json(usersArray);
+  })
+  
+
 interface Piu {
   id: string;
   idUser: string;
@@ -69,7 +78,7 @@ interface Piu {
   dateOfActualization: Date;
 }
 
-const piusArray = [] as Piu[];
+let piusArray = [] as Piu[];
 
 routes.post("/pius", (req, resp) => {
   const { id, idUser, text, dateOfCreation, dateOfActualization } = req.body;
@@ -99,17 +108,25 @@ routes.post("/pius", (req, resp) => {
 });
 
 routes.get("/pius", (req, resp) => {
-    return resp.json(piusArray);
-  });
-
-  routes.get('/pius/:id', (req,resp) => {
-    const { id } = req.params;
-
-    const piuIdFind = piusArray.find((piu) => piu.id === id);
-
-    if (!piuIdFind) return resp.status(404).json({ message: "Piu not found" });
-
-    resp.json(piuIdFind);
+  return resp.json(piusArray);
 });
+
+routes.get('/pius/:id', (req,resp) => {
+  const { id } = req.params;
+
+  const piuIdFind = piusArray.find((piu) => piu.id === id);
+
+  if (!piuIdFind) return resp.status(404).json({ message: "Piu not found" });
+
+  resp.json(piuIdFind);
+});
+
+routes.delete('/pius/:id', (req,resp) => {
+  const { id } = req.params;
+
+  piusArray = piusArray.filter((piu) => piu.id !== id); 
+
+  resp.json(piusArray);
+})
 
 export default routes;
