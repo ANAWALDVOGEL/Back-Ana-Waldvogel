@@ -51,6 +51,16 @@ routes.get("/users", (req, resp) => {
   return resp.json(usersArray);
 });
 
+routes.get('/users/:id', (req,resp) => {
+    const { id } = req.params;
+
+    const userIdFind = usersArray.find((user) => user.id === id);
+
+    if (!userIdFind) return resp.status(404).json({ message: "User not found" });
+
+    resp.json(userIdFind);
+})
+
 interface Piu {
   id: string;
   idUser: string;
