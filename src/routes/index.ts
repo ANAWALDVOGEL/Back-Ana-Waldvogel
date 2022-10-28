@@ -59,7 +59,7 @@ routes.get('/users/:id', (req,resp) => {
     if (!userIdFind) return resp.status(404).json({ message: "User not found" });
 
     resp.json(userIdFind);
-})
+});
 
 interface Piu {
   id: string;
@@ -74,10 +74,9 @@ const piusArray = [] as Piu[];
 routes.post("/pius", (req, resp) => {
   const { id, idUser, text, dateOfCreation, dateOfActualization } = req.body;
 
-  const findIdUser = usersArray.find((user) => user.id != idUser);
+  const findIdUser = usersArray.find((user) => user.id === idUser);
     
-  if (!findIdUser)
-    return resp.status(400).json({ message: "Cannot create a piu because user was not found"});
+  if (!findIdUser) return resp.status(400).json({ message: "Cannot create a piu because user was not found"});
 
   if (text.length > 140)
     return resp.status(400).json({ message: "Cannot create piu because you exceeded the limit of characters"});  
@@ -102,5 +101,15 @@ routes.post("/pius", (req, resp) => {
 routes.get("/pius", (req, resp) => {
     return resp.json(piusArray);
   });
+
+  routes.get('/pius/:id', (req,resp) => {
+    const { id } = req.params;
+
+    const piuIdFind = piusArray.find((piu) => piu.id === id);
+
+    if (!piuIdFind) return resp.status(404).json({ message: "Piu not found" });
+
+    resp.json(piuIdFind);
+});
 
 export default routes;
