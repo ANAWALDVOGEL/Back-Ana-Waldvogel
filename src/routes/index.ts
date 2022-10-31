@@ -52,52 +52,52 @@ routes.get("/users", (req, resp) => {
 });
 
 routes.get('/users/:id', (req,resp) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const userIdFind = usersArray.find((user) => user.id === id);
+  const userIdFind = usersArray.find((user) => user.id === id);
 
-    if (!userIdFind) return resp.status(404).json({ message: "User not found" });
+  if (!userIdFind) return resp.status(404).json({ message: "User not found" });
 
-    resp.json(userIdFind);
+  resp.json(userIdFind);
 });
 
 routes.put('/users/:id', (req,resp) => {
-    const { id } = req.params; 
+  const { id } = req.params; 
 
-    const { name, dateOfBirth, cpf, cellPhone, dateOfActualization } = req.body;
+  const { name, dateOfBirth, cpf, cellPhone, dateOfActualization } = req.body;
 
-    const userData = { 
-        name,
-        dateOfBirth,
-        cpf,
-        cellPhone,
-        dateOfActualization: new Date()
-    } as User;
+  const userData = { 
+    name,
+    dateOfBirth,
+    cpf,
+    cellPhone,
+    dateOfActualization: new Date()
+  } as User;
 
-    const userId = usersArray.findIndex((user) => user.id === id);
+  const userId = usersArray.findIndex((user) => user.id === id);
 
-    const verificateCpf = usersArray.findIndex((user) => user.cpf === cpf && user.id !== id);
+  const verificateCpf = usersArray.findIndex((user) => user.cpf === cpf && user.id !== id);
 
-    if (verificateCpf !== -1) return resp.status(400).json({ message: "User with this cpf already exists" });
+  if (verificateCpf !== -1) return resp.status(400).json({ message: "User with this cpf already exists" });
     
-    if (!name || !cpf || !cellPhone || !dateOfBirth)
-      return resp.status(400).json({ message: "Cannot create an account because some information is missing"});
+  if (!name || !cpf || !cellPhone || !dateOfBirth)
+    return resp.status(400).json({ message: "Cannot create an account because some information is missing"});
     
-    usersArray[userId] = {...usersArray[userId], ...userData};
+  usersArray[userId] = {...usersArray[userId], ...userData};
 
-    return resp.json(usersArray[userId]);
+  return resp.json(usersArray[userId]);
 });
 
 routes.delete('/users/:id', (req,resp) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const verificateId = usersArray.find((user => user.id === id));
+  const verificateId = usersArray.find((user => user.id === id));
 
-    if (!verificateId) return resp.status(404).json({ message: "User not found"});
+  if (!verificateId) return resp.status(404).json({ message: "User not found"});
 
-    usersArray = usersArray.filter((user) => user.id !== id); 
+  usersArray = usersArray.filter((user) => user.id !== id); 
   
-    resp.json(usersArray);
+  resp.json(usersArray);
 });
   
 
@@ -153,28 +153,28 @@ routes.get('/pius/:id', (req,resp) => {
 });
 
 routes.put('/pius/:id', (req,resp) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const piuId = piusArray.findIndex((piu) => piu.id === id);
+  const piuId = piusArray.findIndex((piu) => piu.id === id);
 
-    if (piuId === -1) return resp.status(404).json({ message: "Piu not found"});
+  if (piuId === -1) return resp.status(404).json({ message: "Piu not found"});
 
-    const { text } = req.body;
+  const { text } = req.body;
   
-    if (text.length > 140)
-      return resp.status(400).json({ message: "Cannot create piu because you exceeded the limit of characters"});  
+  if (text.length > 140)
+    return resp.status(400).json({ message: "Cannot create piu because you exceeded the limit of characters"});  
       
-    const piuData = {
-      text,
-      dateOfActualization: new Date()
-    } as Piu;
+  const piuData = {
+    text,
+    dateOfActualization: new Date()
+  } as Piu;
 
-    if (!text)
+  if (!text)
     return resp.status(400).json({ message: "Cannot create a Piu because text is empty"});
 
-    piusArray[piuId] = {...piusArray[piuId], ...piuData};
+  piusArray[piuId] = {...piusArray[piuId], ...piuData};
 
-    return resp.json(piusArray[piuId]);
+  return resp.json(piusArray[piuId]);
 });
 
 routes.delete('/pius/:id', (req,resp) => {
